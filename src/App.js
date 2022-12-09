@@ -15,22 +15,22 @@ function App() {
 
   const checkForColumnOfThree = () => {
     for (let i = 0; i < 47; i++) {
-      const columnOfThree = [i, i + width, i + width * 2]
-      const decidedColor = currentColorArrangement[i]
+      const columnOfThree = [i, i + width, i + width * 2];
+      const decidedColor = currentColorArrangement[i];
 
       if (columnOfThree.every(square => currentColorArrangement[square] === decidedColor)) {
-        columnOfThree.forEach(square => currentColorArrangement[square] = '')
+        columnOfThree.forEach(square => currentColorArrangement[square] = '');
       }
     }
   }
 
   const checkForColumnOfFour = () => {
     for (let i = 0; i < 39; i++) {
-      const columnOfFour = [i, i + width, i + width * 2, i + width * 3]
-      const decidedColor = currentColorArrangement[i]
+      const columnOfFour = [i, i + width, i + width * 2, i + width * 3];
+      const decidedColor = currentColorArrangement[i];
 
       if (columnOfFour.every(square => currentColorArrangement[square] === decidedColor)) {
-        columnOfFour.forEach(square => currentColorArrangement[square] = '')
+        columnOfFour.forEach(square => currentColorArrangement[square] = '');
       }
     }
   }
@@ -44,7 +44,7 @@ function App() {
       if (notValid.includes(i)) continue;
 
       if (rowOfThree.every(square => currentColorArrangement[square] === decidedColor)) {
-        rowOfThree.forEach(square => currentColorArrangement[square] = '')
+        rowOfThree.forEach(square => currentColorArrangement[square] = '');
       }
     }
   }
@@ -58,8 +58,27 @@ function App() {
       if (notValid.includes(i)) continue;
 
       if (rowOfThree.every(square => currentColorArrangement[square] === decidedColor)) {
-        rowOfThree.forEach(square => currentColorArrangement[square] = '')
+        rowOfThree.forEach(square => currentColorArrangement[square] = '');
       }
+    }
+  }
+
+  const moveSquareBelow = () => {
+
+    const firstRow = [0, 1, 2, 3, 4, 5, 6, 7, ]
+      for (let i = 0; i < 64 - width; i++) {
+      const isFirstRow = firstRow.includes(i)
+
+      if (isFirstRow && currentColorArrangement[i] === '') {
+        const randomColor = candyColors[Math.floor(Math.random() * candyColors.length)];
+        currentColorArrangement[i] = randomColor;
+      }
+
+
+        if (currentColorArrangement[i + width] === '') {
+          currentColorArrangement[i + width] = currentColorArrangement[i];
+          currentColorArrangement[i] = '';
+        }
     }
   }
 
@@ -83,11 +102,12 @@ function App() {
       checkForColumnOfThree();  
       checkForRowOfFour(); 
       checkForRowOfThree(); 
+      moveSquareBelow();
       setCurrentColorArrangement([...currentColorArrangement]);
-    }, 100)
+    }, 1000)
     return () => clearInterval(timer)
 
-  }, [checkForColumnOfThree, checkForColumnOfFour, checkForRowOfThree, checkForRowOfFour, currentColorArrangement])
+  }, [checkForColumnOfThree, checkForColumnOfFour, checkForRowOfThree, checkForRowOfFour, currentColorArrangement, moveSquareBelow])
 
   return (
     <div className="app">
